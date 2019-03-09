@@ -37,6 +37,7 @@ export default class SwiperFlatList extends PureComponent {
     autoplay: PropTypes.bool.isRequired,
     // autoplayDirection: PropTypes.bool.isRequired,
     autoplayLoop: PropTypes.bool.isRequired,
+    onIndexChanged: PropTypes.func
   };
 
   static defaultProps = {
@@ -50,6 +51,7 @@ export default class SwiperFlatList extends PureComponent {
     vertical: false,
     renderAll: false,
     PaginationComponent: Pagination,
+    onIndexChanged: () => null
   };
 
   componentWillMount() {
@@ -67,8 +69,11 @@ export default class SwiperFlatList extends PureComponent {
     }
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps, nextState) {
     this.setup(nextProps);
+    if (this.state.paginationIndex !== nextState.paginationIndex) {
+      this.props.onIndexChanged(nextState.paginationIndex)
+    }
   }
 
   componentWillUnmount() {
